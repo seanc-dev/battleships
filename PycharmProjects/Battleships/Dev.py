@@ -343,7 +343,7 @@ while play == "Y":
             board = update_board(guess_coordinates, board, "O")
 
         # TEST print solution
-        print_board(ship_locations)
+        #print_board(ship_locations)
         print(" ")
 
         # Print game board

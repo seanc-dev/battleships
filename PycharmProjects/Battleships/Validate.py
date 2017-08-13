@@ -26,4 +26,3 @@ def coordinates_on_board(board_min, board_max, coordinates):
         valid = True
     return valid
 
-

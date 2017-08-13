@@ -1,5 +1,4 @@
-
-## DEFINE LISTS & DICTIONARIES ##
+# DEFINE LISTS & DICTIONARIES
 board_def = dict()
 
 board_def["Easy"] = {}
@@ -20,8 +19,27 @@ board_def["Hard"]["ship_count"] = 4
 board_def["Hard"]["ship_max_size"] = 5
 board_def["Hard"]["misses_allowed"] = 12
 
-ship_names = {}
-ship_names[2] = "Frigate"
-ship_names[3] = "Destroyer"
-ship_names[4] = "Battleship"
-ship_names[5] = "Supercarrier"
+ship_names = {
+    2: "Frigate",
+    3: "Destroyer",
+    4: "Battleship",
+    5: "Supercarrier"
+}
+
+responses = {
+    "difficulty_selection": {
+        "Easy": {
+            "option_count": 1,
+            0: "Alright, no shame in starting slow. You are just starting.. right?",
+            1: "Baby steps? Are you a baby?"
+        },
+        "Medium": {
+            "option_count": 0,
+            0: "The Middle Way. What are you, a Buddhist?"
+        },
+        "Hard": {
+            "option_count": 0,
+            0: "Now that's what I'm talkin' bout. Don't fuck it up though."
+        }
+    }
+}

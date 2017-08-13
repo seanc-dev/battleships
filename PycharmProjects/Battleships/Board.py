@@ -27,3 +27,4 @@ def display(board_f):
 def update(update_coordinates, board_x, value):
     board_x[update_coordinates["row"]][update_coordinates["col"]] = value
     return board_x
+

@@ -1,6 +1,35 @@
 import dictionaries
 import board
 import ships
+import shot
+from random import randint
+
+
+def form_styles_list():
+    style_list = [style for style in dictionaries.game_styles]
+    return style_list
+
+
+def print_styles_list():
+    for style in dictionaries.game_styles:
+        print(style)
+
+
+def game_style():
+    styles_list = form_styles_list()
+    print("What style would you like to play?")
+    print_styles_list()
+    while True:
+        try:
+            game_style = input("Style: ")
+        except ValueError:
+            print("Sorry that's not one of the options! Please try again.")
+            continue
+        if game_style not in styles_list:
+            print("Sorry that's not one of the options! Please try again.")
+            continue
+        else:
+            break
 
 
 def difficulty_response():
@@ -20,31 +49,36 @@ def difficulty_response():
     return difficulty_x
 
 
-def build_ship_lengths(ship_count):  # board_def[difficulty]["ship_count"]
-    for i in range(ship_count):
-        lengths = list()
-        lengths.append(i + 2)
-    return lengths
-
-
-def build_game_variables(board_dict, ship_names):  # board_def
-    ship_lengths = build_ship_lengths(board_dict["ship_count"])
-    game_variables = {}
-    game_variables["ships_remaining"] = board_dict["ship_count"]
-    game_variables["misses_remaining"] = board_dict["misses_allowed"]
-    game_variables["board"] = board.generate_board(board_dict["board_size"])
-    game_variables["ships"] = ships.generate_ships(board_dict["ship_count"], ship_names, ship_lengths)
+def build_game_variables():  # board_def
+    difficulty = difficulty_response()
+    board_dict = dictionaries.board_def[difficulty]
+    game_variables = {'guesses': {}, 'difficulty': difficulty, 'ships_remaining': board_dict["ship_count"],
+                      'misses_remaining': board_dict["misses_allowed"], 'board_dimensions': {
+            'min': board_dict["board_min"], 'max': board_dict["board_size"]}}
+    game_variables["board"] = board.generate(game_variables["board_dimensions"]["max"])
+    game_variables["ships"] = ships.generate_ships(
+        board_dict["ship_count"],
+        dictionaries.ship_names[randint(0, dictionaries.ship_names["optionCount"])],
+        game_variables["board_dimensions"]["min"],
+        game_variables["board_dimensions"]["max"]
+    )
     return game_variables
 
 
-def fire_away():
-
+def fire_away(game_variables, board_dimensions, coordinate_no):
+    game_variables["guesses"][coordinate_no] = shot.request_shot_coordinates(
+        game_variables["guesses"],
+        board_dimensions
+    )
+    outcomes = shot.shot_outcomes(game_variables["guesses"][coordinate_no], game_variables)
+    if outcomes["hit"]:
+        shot.shot_hit_flow(outcomes, )
+    return outcomes
 
 
 def init_game():
     print("Let's play Battleships!")
-    difficulty = difficulty_response()
-    game_variables = build_game_variables(dictionaries.board_def[difficulty], dictionaries.ship_names)
+    game_variables = build_game_variables()
     print(" ")
     print("There are {0} ships somewhere in this ocean..".format(str(game_variables["ships_remaining"])))
     print("Destroy them all to win!")

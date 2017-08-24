@@ -1,9 +1,11 @@
 from random import randint
-import Dictionaries
+import dictionaries
+import board
+import validate
 
 ## DEFINE LISTS & DICTIONARIES ##
-board_def = Dictionaries.board_def
-ship_names = Dictionaries.ship_names
+board_def = dictionaries.board_def
+ship_names = dictionaries.ship_names
 
 ship_lengths = list()
 ships_remaining = list()
@@ -42,12 +44,12 @@ def print_board(board_f):
 
 # Define random row function to gen ship row for ship positions fun
 def random_row(board_len):
-    return randint(1, len(board_len))
+    return randint(1, board_len)
 
 
 # Define random col function to gen ship col for ship positions fun
 def random_col(board_len):
-    return randint(1, len(board_len))
+    return randint(1, board_len)
 
 
 # Define random binary int to determine whether ship stretches along row or col
@@ -99,7 +101,7 @@ def coordinates_on_board(board_min, board_max, coordinates):
 def shadow_ship_coordinates_valid(shadow_ship, ships):
     valid = True
     for shadow_section in range(1, shadow_ship["ShipLength"] + 1):
-        valid = coordinates_on_board(board_start, board_def[difficulty]["board_size"], shadow_section)
+        valid = validate.coordinates_on_board(board_start, board_def[difficulty]["board_size"], shadow_ship[shadow_section])
         if len(ships) > 0 & valid:
             valid = ship_coordinates_valid(ships, shadow_section)
         if not valid:
@@ -133,42 +135,6 @@ def generate_ships(ship_count_x, ship_names_x, ship_lengths_x):
     for i in range(ship_count_x):
         ships_x[i] = shadow_ship_generate(ship_lengths_x[i], ship_names_x[i], ships_x)
     return ships_x
-
-
-# Iterate through list of dictionaries which have n items (where n is length of ship)
-# def generate_ships_OLD(ship_count, ship_names_x, ship_lengths_x):
-#    for i in range(ship_count):  # Top level loop (by ship)
-#        # Define control variable for this ship
-#        valid_position = False
-#        # While loop will continue to run while the ship is invalid
-#        while not valid_position:
-#            shadow_ship = {}
-#            shadow_ship["SectionsRemaining"] = ship_lengths_x[i]
-#            shadow_ship["ShipLength"] = 1
-#            shadow_ship["name"] = ship_names_x[ship_lengths[i]]
-#            # Set starting co-ordinate for this ship
-#            shadow_ship[1] = {}
-#            shadow_ship[1]["IsHit"] = False
-#            shadow_ship[1]["row"] = random_row(board)  # Set initial row ref for this ship as randint
-#            shadow_ship[1]["col"] = random_col(board)  # Set initial col ref for this ship as randint
-#            growth_direction = pos_or_neg()  # Set growth direction for ship from initial co-ordinates
-#            row_col = row_or_col()  # Set value to define whether ship grows a]long row or up/down col
-#            # Define loop to generate remainder of shadow_ship:
-#            for j in range(2, ship_lengths[i] + 1):
-#                shadow_ship[j] = {}
-#                shadow_ship[j]["IsHit"] = False
-#                shadow_ship[j]["col"] = shadow_ship[j - 1]["col"]
-#                shadow_ship[j]["row"] = shadow_ship[j - 1]["row"]
-#                shadow_ship["ShipLength"] = shadow_ship["ShipLength"] + 1
-#                shadow_ship[j][row_col] = shadow_ship[j - 1][row_col] + growth_direction
-#            valid_position = shadow_ship_coordinates_valid(shadow_ship, ships)
-#            if shadow_ship["ShipLength"] == ship_lengths_x[i] and valid_position:
-#                valid_position = True
-#            else:
-#                valid_position = False
-#                # Once the shadow_ship value is confirmed valid, set as new entry in ships dictionary
-#        ships[i] = shadow_ship
-#    return ships
 
 
 # Check that coordinates are valid
@@ -273,9 +239,9 @@ while play == "Y":
 
     ships_remaining = board_def[difficulty]["ship_count"]
     misses_remaining = board_def[difficulty]["misses_allowed"]
+    board = board.generate(board_def[difficulty]["board_size"])
 
     print(" ")
-    board = generate_board(board_def[difficulty]["board_size"])
     print("There are {0} ships somewhere in this ocean..".format(str(board_def[difficulty]["ship_count"])))
     print("Destroy them all to win!")
     print(" ")
@@ -285,7 +251,7 @@ while play == "Y":
     print(ships)
 
     # Generate and print board with ship locations
-    ship_locations = generate_board(board_def[difficulty]["board_size"])
+    ship_locations = board.generate(board_def[difficulty]["board_size"])
     for ship in ships:
         for ship_section in range(1, ships[ship]["ShipLength"] + 1):
             # print("ship = {0}".format(str(ship)) + ", ship_section = {0}".format(str(ship_section)))
@@ -316,7 +282,7 @@ while play == "Y":
                         guess_coordinates["row"] = int(input("Guess Row: "))
                         valid_coordinates = coordinates_valid(guess_coordinates, board, guesses)
                 except ValueError:
-                    print("Make sure you enter a number between {0} and {1}.".format( \
+                    print("Make sure you enter a number between {0} and {1}.".format(
                         str(board_start), str(board_def[difficulty]["board_size"])))
                     continue
                 else:

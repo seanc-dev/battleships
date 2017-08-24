@@ -1,11 +1,11 @@
 
-def generate(board_xy):
+def generate(board_max):
     board_f = []
-    for i in range(board_xy + 1):
+    for i in range(board_max + 1):
         nextrow = []
         if i == 0:
             toprow = []
-            for j in range(board_xy + 1):
+            for j in range(board_max + 1):
                 if j == 0:
                     toprow.append(" ")
                 else:
@@ -13,7 +13,7 @@ def generate(board_xy):
             board_f.append(toprow)
         else:
             nextrow.append(str(i))
-            for j in range(2, board_xy + 2):
+            for j in range(2, board_max + 2):
                 nextrow.append("-")
             board_f.append(nextrow)
     return board_f

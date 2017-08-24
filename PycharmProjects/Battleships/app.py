@@ -1,14 +1,25 @@
 
 import game
+import dictionaries
 
 play = "Y"
 
 while play == "Y":
 
-    game.init_game()
+    game_variables = game.init_game()
 
-    while not game_over:
+    game_variables["game_over"] = False
 
-        game_over = game.fire_away()
+    coordinate_no = 0
+
+    while not game_variables["game_over"]:
+
+        game_variables = game.fire_away(
+            game_variables,
+            dictionaries.board_def[game_variables["difficulty"]],
+            coordinate_no
+        )
+
+        coordinate_no = coordinate_no + 1
 
     play = input("Play again? (Y/N): ")

@@ -1,7 +1,7 @@
 import dictionaries
 import ships
 import validate
-import game_flow
+import game
 
 
 difficulty = "Hard"
@@ -11,18 +11,18 @@ board_min = 1
 board_max = board_def[difficulty]["board_size"]
 test_ships_full = {
     0: {
-        'SectionsRemaining': 2, 'ShipLength': 2, 'name': 'Frigate',
+        'SectionsRemaining': 2, 'length': 2, 'name': 'Frigate',
         0: {'col': 1, 'row': 4, 'IsHit': False},
         1: {'col': 2, 'row': 4, 'IsHit': False}
          },
     1: {
-        'SectionsRemaining': 3, 'ShipLength': 3, 'name': 'Destroyer',
+        'SectionsRemaining': 3, 'length': 3, 'name': 'Destroyer',
         0: {'col': 6, 'row': 2, 'IsHit': False},
         1: {'col': 5, 'row': 2, 'IsHit': False},
         2: {'col': 4, 'row': 2, 'IsHit': False}
          },
     2: {
-        'SectionsRemaining': 4, 'ShipLength': 4, 'name': 'Battleship',
+        'SectionsRemaining': 4, 'length': 4, 'name': 'Battleship',
         0: {'col': 6, 'row': 6, 'IsHit': False},
         1: {'col': 6, 'row': 5, 'IsHit': False},
         2: {'col': 6, 'row': 4, 'IsHit': False},
@@ -30,7 +30,7 @@ test_ships_full = {
         }
 }
 test_ship = {
-    'SectionsRemaining': 2, 'ShipLength': 2, 'name': 'Frigate',
+    'SectionsRemaining': 2, 'length': 2, 'name': 'Frigate',
     0: {'col': 3, 'row': 4, 'IsHit': False},
     1: {'col': 4, 'row': 4, 'IsHit': False}
 }
@@ -53,9 +53,10 @@ print(f"Random col = {str(ships.random_col((board_max)))}")
 print(f"row_or_col = {str(ships.row_or_col())}")
 print(f"growth_direction = {str(ships.pos_or_neg())}")
 print(
-    f"validate_shadow_ship_coordinates = {str(validate.validate_shadow_ship_coordinates(test_ship, test_ships_full, board_min, board_max))}")
+    "validate_shadow_ship_coordinates = {0}"
+    .format(str(ships.validate_shadow_ship_coordinates(test_ship, test_ships_full, board_min, board_max))))
 extend_ship_test = {
-    'SectionsRemaining': 3, 'ShipLength': 1, 'name': 'Testy McTestFace',
+    'SectionsRemaining': 3, 'length': 1, 'name': 'Testy McTestFace',
     0: {'col': 2, 'row': 4, 'IsHit': False}
 }
 extend_ship_test_full = ships.extend_shadow_ship(extend_ship_test)
@@ -65,5 +66,14 @@ shadow_ship = ships.shadow_ship_generate(shadow_ship_len=4, shadow_ship_name="Te
                                          ships_dict=test_ships_full, board_min=board_min, board_size=board_max)
 print(f"generated shadow ship = {str(shadow_ship)}")
 
-game_flow.difficulty_response()
+difficulty = game.difficulty_response()
+print("Difficulty = {0}".format(str(difficulty)))
+
+game_style = game.game_style()
+
+print("Range of ship lengths (should be 1 more than {0}) = {1}"
+      .format(board_def[difficulty]["ship_count"], str(ships.build_ship_lengths(board_def[difficulty]["ship_count"]))))
+
+game_variables = game.build_game_variables()
+print(game_variables)
 

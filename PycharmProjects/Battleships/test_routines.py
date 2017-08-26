@@ -66,14 +66,20 @@ shadow_ship = ships.shadow_ship_generate(shadow_ship_len=4, shadow_ship_name="Te
                                          ships_dict=test_ships_full, board_min=board_min, board_size=board_max)
 print(f"generated shadow ship = {str(shadow_ship)}")
 
-difficulty = game.difficulty_response()
+# difficulty = game.difficulty_response()
 print("Difficulty = {0}".format(str(difficulty)))
 
-game_style = game.game_style()
+# game_style = game.game_style()
 
 print("Range of ship lengths (should be 1 more than {0}) = {1}"
       .format(board_def[difficulty]["ship_count"], str(ships.build_ship_lengths(board_def[difficulty]["ship_count"]))))
 
-game_variables = game.build_game_variables()
-print(game_variables)
+# game_variables = game.build_game_variables()
+# print(game_variables)
+# print('ship_names lookup value = {0}'.format(str(
+#     dictionaries.ship_names['key_lookup'][game_variables['style']])))
 
+
+print("Initiate Game")
+print(" ")
+game.init_game()

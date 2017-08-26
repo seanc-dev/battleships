@@ -17,19 +17,21 @@ def print_styles_list():
 
 def game_style():
     styles_list = form_styles_list()
-    print("What style would you like to play?")
+    print("What style would you like to play? The options are:")
     print_styles_list()
     while True:
         try:
-            game_style = input("Style: ")
+            return_style = input("Style: ")
         except ValueError:
             print("Sorry that's not one of the options! Please try again.")
             continue
-        if game_style not in styles_list:
+        while return_style not in styles_list:
             print("Sorry that's not one of the options! Please try again.")
-            continue
-        else:
-            break
+            print("What style would you like to play? The options are:")
+            print_styles_list()
+            return_style = input("Style: ")
+        break
+    return return_style
 
 
 def difficulty_response():
@@ -50,15 +52,18 @@ def difficulty_response():
 
 
 def build_game_variables():  # board_def
+    chosen_style = game_style()
     difficulty = difficulty_response()
     board_dict = dictionaries.board_def[difficulty]
-    game_variables = {'guesses': {}, 'difficulty': difficulty, 'ships_remaining': board_dict["ship_count"],
+    game_variables = {'guesses': {}, 'difficulty': difficulty, 'style': chosen_style.lower(),
+                      'ships_remaining': board_dict["ship_count"],
                       'misses_remaining': board_dict["misses_allowed"], 'board_dimensions': {
             'min': board_dict["board_min"], 'max': board_dict["board_size"]}}
     game_variables["board"] = board.generate(game_variables["board_dimensions"]["max"])
     game_variables["ships"] = ships.generate_ships(
         board_dict["ship_count"],
-        dictionaries.ship_names[randint(0, dictionaries.ship_names["optionCount"])],
+        dictionaries.ship_names[randint(
+            0, dictionaries.ship_names['key_lookup'][game_variables['style']])],
         game_variables["board_dimensions"]["min"],
         game_variables["board_dimensions"]["max"]
     )
@@ -85,3 +90,4 @@ def init_game():
     print(" ")
     board.display(game_variables["board"])
     print(" ")
+    return game_variables

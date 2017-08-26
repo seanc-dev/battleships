@@ -28,10 +28,8 @@ def pos_or_neg():
         return 1
 
 
-def build_ship_lengths(ship_count):  # board_def[difficulty]["ship_count"]
-    for i in range(ship_count):
-        lengths = list()
-        lengths.append(i + 2)
+def build_ship_lengths(ship_count):  # This list should be appending values in the place of a new list item
+    lengths = [(i + 2) for i in range(ship_count)]
     return lengths
 
 

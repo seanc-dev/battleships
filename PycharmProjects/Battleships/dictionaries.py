@@ -27,12 +27,15 @@ game_styles = {
 }
 
 ship_names = {
-    "optionCount": 0,
-    "standard": {
-        2: "Frigate",
-        3: "Destroyer",
-        4: "Battleship",
-        5: "Supercarrier"
+    # "optionCount": 0,
+    "key_lookup": {
+        "standard": 0
+    },
+    0: {
+        0: "Frigate",
+        1: "Destroyer",
+        2: "Battleship",
+        3: "Supercarrier"
     }
 }
 

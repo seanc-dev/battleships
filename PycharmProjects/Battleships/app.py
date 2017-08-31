@@ -15,8 +15,8 @@ while play == "Y":
     while not game_variables["game_over"]:
 
         game_variables = game.fire_away(
-            game_variables,
-            dictionaries.board_def[game_variables["difficulty"]],
+            game_variables['guesses'],
+            game_variables['board_dimensions'],
             coordinate_no
         )
 

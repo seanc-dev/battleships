@@ -2,6 +2,7 @@ import dictionaries
 import ships
 import validate
 import game
+import shot
 
 
 difficulty = "Hard"
@@ -74,12 +75,15 @@ print("Difficulty = {0}".format(str(difficulty)))
 print("Range of ship lengths (should be 1 more than {0}) = {1}"
       .format(board_def[difficulty]["ship_count"], str(ships.build_ship_lengths(board_def[difficulty]["ship_count"]))))
 
-# game_variables = game.build_game_variables()
-# print(game_variables)
-# print('ship_names lookup value = {0}'.format(str(
-#     dictionaries.ship_names['key_lookup'][game_variables['style']])))
+print(game.form_styles_list())
+game.print_styles_list()
 
+ship_names = dictionaries.extract_ship_names()
+print('ship_names dict: {}'.format(str(ship_names)))
+print('max int key of ship_names dict: {}'.format(str(game.find_max_int_key(ship_names['the robots are coming']))))
 
 print("Initiate Game")
 print(" ")
-game.init_game()
+game_variables = game.init_game()
+
+#shot.response_selection('ship_sunk', game_variables['style'], 'Shippy McShipface')

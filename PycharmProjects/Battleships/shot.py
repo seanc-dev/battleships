@@ -20,55 +20,51 @@ def response_selection(response_type, game_style, ship_name=None):
 
 def request_shot_coordinates(guesses, board_dimensions):
     guess = {}
-    while True:
-        try:
-            valid_shot = False
-            while not valid_shot:
-                guess["col"] = int(input("Guess Column: "))
-                guess["row"] = int(input("Guess Row: "))
-                valid_shot = validate.coordinates_guess(guess, board_dimensions, guesses)
-        except ValueError:
-            print("Make sure you enter a number between {0} and {1}.".format(str(board_dimensions["board_min"]),
-                                                                             str(board_dimensions["board_max"])))
-            continue
-        else:
-            return guess
+    try:
+        valid_shot = False
+        while not valid_shot:
+            guess["col"] = int(input("Guess Column: "))
+            guess["row"] = int(input("Guess Row: "))
+            valid_shot = validate.coordinates_guess(guess, board_dimensions, guesses)
+            print(valid_shot)
+    except ValueError:
+        print("Make sure you enter a number between {0} and {1}.".format(str(board_dimensions["board_min"]),
+                                                                         str(board_dimensions["board_max"])))
+    return guess
 
 
-def shot_outcomes(shot, ships, ships_remaining, misses_remaining):
-    outcomes = {'all_ships_sunk': False, 'all_guesses_used': False, 'hit': False, 'ship': {}, 'section': {}}
-    for ship in ships:
-        for ship_section in range(ships[ship]["length"]):
-            if validate.row_and_col_match(shot, ships[ship][ship_section]):
-                outcomes["hit"] = True
-                outcomes["ship"]["position"] = ship
-                outcomes["ship"]["section"]["position"]: ship_section
-                if ships[ship]["SectionsRemaining"] - 1 == 0:
-                    # game_variables["ships_remaining"] = game_variables["ships_remaining"] - 1
-                    ship_sunk_flow(ships, ship)
-                    outcomes["ship"]["sunk"] = True
-                    outcomes["ship"]["name"] = ships[ship]["name"]
-                    if ships_remaining - 1 == 0:
-                        outcomes["all_ships_sunk"] = True
-                return outcomes
-    if misses_remaining - 1 == 0:
-        outcomes["all_guesses_used"] = True
-    return outcomes
-
-
-def ship_sunk_flow(ships, ship_key):
-    ships[ship_key]["sunk"] = True
-    ships["ships_remaining"] = ships["ships_remaining"] - 1
-    return ships
+def shot_outcomes(coordinate_number, game_variables):
+    game_variables['outcomes'] = {}
+    for ship in game_variables['ships']:
+        for ship_section in range(game_variables['ships'][ship]['length']):
+            if validate.row_and_col_match(
+                    game_variables['guesses'][coordinate_number], game_variables['ships'][ship][ship_section]):
+                game_variables['ships'][ship][ship_section]['is_hit'] = True
+                game_variables['outcomes']['hit'] = True
+                if game_variables['ships'][ship]["SectionsRemaining"] - 1 == 0:
+                    game_variables['ships']["sunk"] = True
+                    game_variables['outcomes']['sunk'] = True
+                    game_variables['outcomes']['name'] = game_variables['ships'][ship]['name']
+                    game_variables['remaining_afloat'] -= 1
+                    if game_variables['remaining_afloat'] == 0:
+                        game_variables['outcomes']['all_sunk'] = True
+                return game_variables
+    if not game_variables['outcomes']['hit']:
+        game_variables['misses_remaining'] -= 1
+        if game_variables['misses_remaining'] == 0:
+            game_variables['outcomes']["all_guesses_used"] = True
+    return game_variables
 
 
 def shot_hit_flow(outcomes, ships, game_variables):
+    # set local variables
     ship_key = outcomes["ship"]["position"]
     ship_section_key = outcomes["ship"]["section"]["position"]
+    # change relevant data values and print responses
     ships[ship_key][ship_section_key]["IsHit"] = True
-    ships[ship_key]["sections_remaining"] = ships[ship_key]["sections_remaining"] - 1
+    ships[ship_key]["sections_remaining"] -= 1
     if outcomes["ship"]["sunk"]:
-        ships = ship_sunk_flow(ships, ship_key)
+        ships['remaining_afloat'] -= 1
         if outcomes["all_ships_sunk"]:
             game_variables["all_ships_sunk"] = True
     game_variables["ships"][ship_key] = ships[ship_key]
@@ -76,7 +72,7 @@ def shot_hit_flow(outcomes, ships, game_variables):
 
 
 def shot_miss_flow(outcomes, game_variables):
-    game_variables["misses_remaining"] = game_variables["misses_remaining"] - 1
+    game_variables["misses_remaining"] -= 1
 
 
 def hit_miss(coordinates, ships, misses_remaining_f, ships_remaining_f):

@@ -36,7 +36,7 @@ def game_style():
     print_styles_list()
     while True:
         try:
-            return_style = input("Style: ")
+            return_style = input("Pick one: ")
         except ValueError:
             print("Sorry that's not one of the options! Please try again.")
             continue
@@ -71,9 +71,13 @@ def build_game_variables():
     difficulty = difficulty_response()
     board_dict = dictionaries.board_def[difficulty]
     ship_names = dictionaries.extract_ship_names()
-    game_variables = {'guesses': {}, 'difficulty': difficulty, 'ships_remaining': board_dict["ship_count"],
-                      'style': chosen_style.lower(), 'misses_remaining': board_dict["misses_allowed"],
-                      'board_dimensions': {'min': board_dict["board_min_row"], 'max': board_dict["board_max_row"]}}
+    game_variables = {'guesses': {},
+                      'difficulty': difficulty,
+                      'style': chosen_style.lower(),
+                      'misses_remaining': board_dict["misses_allowed"],
+                      'ships_remaining_afloat': board_dict["ship_count"],
+                      'board_dimensions': {'min': board_dict["board_min_dim"], 'max': board_dict["board_max_dim"]}
+                      }
     game_variables["board"] = board.generate(game_variables["board_dimensions"]["max"])
     game_variables["ships"] = ships.generate_ships(
         board_dict["ship_count"],
@@ -91,10 +95,8 @@ def fire_away(game_variables, coordinate_no):
         game_variables['board_dimensions']
     )
     outcomes = shot.shot_outcomes(
-        game_variables["guesses"][coordinate_no],
-        game_variables['ships'],
-        game_variables['ships_remaining'],
-        game_variables['misses_remaining']
+        coordinate_no,
+        game_variables
     )
     if outcomes["hit"]:
         shot.shot_hit_flow(outcomes, game_variables)
@@ -105,7 +107,7 @@ def init_game():
     print("Let's play Battleships!")
     game_variables = build_game_variables()
     print(" ")
-    print("There are {0} ships somewhere in this ocean..".format(str(game_variables["ships_remaining"])))
+    print("There are {0} ships somewhere in this ocean..".format(str(game_variables["ships_remaining_afloat"])))
     print("Destroy them all to win!")
     print(" ")
     board.display(game_variables["board"])

@@ -4,41 +4,41 @@ from csv import DictReader
 
 board_def = dict()
 
-board_def["Easy"] = {}
-board_def["Easy"]["board_min_row"] = 1
-board_def["Easy"]["board_max_row"] = 4
-board_def["Easy"]["ship_count"] = 2
-board_def["Easy"]["ship_max_size"] = 3
-board_def["Easy"]["misses_allowed"] = 8
+board_def['Easy'] = {}
+board_def['Easy']['board_min_dim'] = 1
+board_def['Easy']['board_max_dim'] = 4
+board_def['Easy']['ship_count'] = 2
+board_def['Easy']['ship_max_size'] = 3
+board_def['Easy']['misses_allowed'] = 8
 
-board_def["Medium"] = {}
-board_def["Medium"]["board_min_row"] = 1
-board_def["Medium"]["board_max_row"] = 6
-board_def["Medium"]["ship_count"] = 3
-board_def["Medium"]["ship_max_size"] = 4
-board_def["Medium"]["misses_allowed"] = 10
+board_def['Medium'] = {}
+board_def['Medium']['board_min_dim'] = 1
+board_def['Medium']['board_max_dim'] = 6
+board_def['Medium']['ship_count'] = 3
+board_def['Medium']['ship_max_size'] = 4
+board_def['Medium']['misses_allowed'] = 10
 
-board_def["Hard"] = {}
-board_def["Hard"]["board_min_row"] = 1
-board_def["Hard"]["board_max_row"] = 8
-board_def["Hard"]["ship_count"] = 4
-board_def["Hard"]["ship_max_size"] = 5
-board_def["Hard"]["misses_allowed"] = 12
+board_def['Hard'] = {}
+board_def['Hard']['board_min_dim'] = 1
+board_def['Hard']['board_max_dim'] = 8
+board_def['Hard']['ship_count'] = 4
+board_def['Hard']['ship_max_size'] = 5
+board_def['Hard']['misses_allowed'] = 12
 
 
 difficulty_options = {
-    "Easy": {
-        "option_count": 1,
-        0: "Alright, no shame in starting slow. You are just starting.. right?",
-        1: "Baby steps? Are you a baby?"
+    'Easy': {
+        'option_count': 1,
+        0: 'Alright, no shame in starting slow. You are just starting.. right?',
+        1: 'Baby steps? Are you a baby?'
     },
-    "Medium": {
-        "option_count": 0,
-        0: "The Middle Way. What are you, a Buddhist?"
+    'Medium': {
+        'option_count': 0,
+        0: 'The Middle Way. What are you, a Buddhist?'
     },
-    "Hard": {
-        "option_count": 0,
-        0: "Now that's what I'm talkin' bout. Don't fuck it up though."
+    'Hard': {
+        'option_count': 0,
+        0: 'Now that''s what I''m talkin'' bout. Don''t fuck it up though.'
     }
 }
 
@@ -91,7 +91,7 @@ def unpack_csv(filename, headers):
 
 
 def extract_ship_names():
-    data = unpack_csv("ship_names.csv", (['game_style', 'randomiser', 'ship_ID', 'name']))
+    data = unpack_csv('ship_names.csv', (['game_style', 'randomiser', 'ship_ID', 'name']))
     ship_names = {}
     for row in data:
         append_new_dict(data[row]['game_style'], ship_names, {})

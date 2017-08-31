@@ -9,7 +9,7 @@ difficulty = "Hard"
 
 board_def = dictionaries.board_def
 board_min = 1
-board_max = board_def[difficulty]["board_size"]
+board_max = board_def[difficulty]["board_max_dim"]
 test_ships_full = {
     0: {
         'SectionsRemaining': 2, 'length': 2, 'name': 'Frigate',
@@ -45,6 +45,12 @@ print(
 print(
     f"coordinate_crossover_check (check whether test_ship is within test_ships_full) = {validate.coordinate_crossover_check(test_ships_full,test_ship[0])}")
 print(f"row_and_col_match (should return false) = {str(validate.row_and_col_match(test_ship[0], test_ship[1]))}")  # Should return false
+game_variables = game.build_game_variables()
+
+print('coordinates on board (true): {}'.format(str(validate.coordinates_on_board(board_min, board_max, test_ship[0]))))
+print(validate.coordinates_guess(test_ship[0], game_variables['board_dimensions'], game_variables['guesses']))
+
+'''
 print(" ")
 
 # Ships
@@ -82,8 +88,16 @@ ship_names = dictionaries.extract_ship_names()
 print('ship_names dict: {}'.format(str(ship_names)))
 print('max int key of ship_names dict: {}'.format(str(game.find_max_int_key(ship_names['the robots are coming']))))
 
+
 print("Initiate Game")
 print(" ")
 game_variables = game.init_game()
 
+print(game_variables)
+
+
+shot.request_shot_coordinates(game_variables['guesses'], game_variables['board_dimensions'])
+
 #shot.response_selection('ship_sunk', game_variables['style'], 'Shippy McShipface')
+
+'''

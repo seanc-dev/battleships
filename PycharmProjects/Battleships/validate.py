@@ -26,10 +26,10 @@ def coordinates_on_board(board_min, board_max, coordinates):
 
 # Check that coordinates are valid
 def coordinates_guess(coordinates, board_dict, previous_coordinates):
-    valid = coordinates_on_board(board_dict["board_min"], board_dict["board_max"], coordinates)
+    valid = coordinates_on_board(board_dict["min"], board_dict["max"], coordinates)
     if not valid:
         print("Sorry, those co-ordinates aren't on the board! Guess again.")
-        return valid  # This is more efficient and has no downside
+        return valid  # This is more efficient and has no downside (as it now can't be valid)
     for previous_coordinate in previous_coordinates:
         valid = not row_and_col_match(coordinates, previous_coordinate)
         if not valid:

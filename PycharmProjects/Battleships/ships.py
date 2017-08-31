@@ -48,7 +48,7 @@ def validate_shadow_ship_coordinates(shadow_ship, ships_dict, board_min, board_m
 
 def extend_shadow_ship(shadow_ship, row_col=row_or_col(), growth_direction=pos_or_neg()):
     for j in range(1, shadow_ship["SectionsRemaining"]):
-        shadow_ship[j] = {"IsHit": False, "col": shadow_ship[j - 1]["col"], "row": shadow_ship[j - 1]["row"]}
+        shadow_ship[j] = {"is_hit": False, "col": shadow_ship[j - 1]["col"], "row": shadow_ship[j - 1]["row"]}
         shadow_ship[j][row_col] = shadow_ship[j - 1][row_col] + growth_direction
         shadow_ship["length"] = shadow_ship["length"] + 1
     return shadow_ship

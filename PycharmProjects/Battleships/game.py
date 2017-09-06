@@ -3,6 +3,13 @@ import board
 import ships
 import shot
 from random import randint
+import os
+
+clear = lambda: os.system('clear')
+
+
+def test_print(print_name, object):
+    print('{}: {}'.format(str(print_name), str(object)))
 
 
 def form_styles_list():
@@ -89,17 +96,22 @@ def build_game_variables():
     return game_variables
 
 
-def fire_away(game_variables, coordinate_no):
-    game_variables['guesses'][coordinate_no] = shot.request_shot_coordinates(
+def fire_away(game_variables, guess_number):
+    clear()
+    print(" ")
+    print("There are {0} ships that still evade you..".format(str(game_variables["ships_remaining_afloat"])))
+    print(" ")
+    board.display(game_variables["board"])
+
+    game_variables['guesses'][guess_number] = shot.request_coordinates(
         game_variables,
         game_variables['board_dimensions']
     )
-    outcomes = shot.shot_outcomes(
-        coordinate_no,
+    game_variables = shot.outcomes_and_update(
+        guess_number,
         game_variables
     )
-    if outcomes["hit"]:
-        shot.shot_hit_flow(outcomes, game_variables)
+    shot.print_response(game_variables['outcomes'])
     return game_variables
 
 
@@ -108,8 +120,14 @@ def init_game():
     game_variables = build_game_variables()
     print(" ")
     print("There are {0} ships somewhere in this ocean..".format(str(game_variables["ships_remaining_afloat"])))
-    print("Destroy them all to win!")
     print(" ")
     board.display(game_variables["board"])
     print(" ")
+    print("Destroy them all to win!")
+    print(" ")
+    print(" ")
+    try:
+        input("Press enter to take aim..")
+    except SyntaxError:
+        pass
     return game_variables

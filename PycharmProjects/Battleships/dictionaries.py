@@ -114,3 +114,99 @@ def extract_responses():
     return responses
 
 # print(extract_ship_names())
+
+
+ships = {
+    0: {
+        'sections_remaining': 2,
+        'length': 2,
+        'name': 'Frigate',
+        'sunk': False,
+        0: {
+            'is_hit': False,
+            'col': 7,
+            'row': 6
+        },
+        1: {
+            'is_hit': False,
+            'col': 8,
+            'row': 6
+        }
+    },
+    1: {
+        'sections_remaining': 0,
+        'length': 3,
+        'name': 'Destroyer',
+        'sunk': False,
+        0: {
+            'is_hit': False,
+            'col': 1,
+            'row': 8
+        },
+        1: {
+            'is_hit': True,
+            'col': 2,
+            'row': 8
+        },
+        2: {
+            'is_hit': True,
+            'col': 3
+            , 'row': 8
+        }
+    },
+    2: {
+        'sections_remaining': 2,
+        'length': 4,
+        'name': 'Battleship',
+        'sunk': False,
+        0: {
+            'is_hit': False,
+            'col': 4,
+            'row': 1
+        },
+        1: {
+            'is_hit': False,
+            'col': 5,
+            'row': 1
+        }, 2: {
+            'is_hit': False,
+            'col': 6,
+            'row': 1
+        }, 3: {
+            'is_hit': True,
+            'col': 7,
+            'row': 1
+        }
+    },
+    3: {
+        'sections_remaining': 3,
+        'length': 5,
+        'name': 'Supercarrier',
+        'sunk': False,
+        0: {
+            'is_hit': False,
+            'col': 1,
+            'row': 4
+        },
+        1: {
+            'is_hit': False,
+            'col': 2,
+            'row': 4
+        }, 2: {
+            'is_hit': False,
+            'col': 3,
+            'row': 4
+        },
+        3: {
+            'is_hit': False,
+            'col': 4,
+            'row': 4
+        },
+        4: {
+            'is_hit': True,
+            'col': 5,
+            'row': 4
+        }
+    },
+    'sunk': True
+}
